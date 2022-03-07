@@ -1,0 +1,13 @@
+{
+    "files.exclude": {
+        "**/target": true,
+        "**/Cargo.lock": true,
+    },
+    "editor.codeLens": false,
+    "cSpell.words": [
+        "aabb",
+        "consts",
+        "despawn",
+        "timestep"
+    ]
+}
