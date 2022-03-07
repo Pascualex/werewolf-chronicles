@@ -1,6 +1,7 @@
 use std::time::Duration;
 
 use bevy::prelude::*;
+use rand::Rng;
 
 use crate::game::{components::*, TIME_STEP};
 
@@ -29,6 +30,7 @@ pub fn turret_system(
     ai_query: Query<&Transform, With<Ai>>,
     mut commands: Commands,
 ) {
+    let mut rng = rand::thread_rng();
     for (mut turret, transform) in query.iter_mut() {
         turret.timer.tick(Duration::from_secs_f32(TIME_STEP));
         if !turret.timer.just_finished() {
@@ -46,15 +48,20 @@ pub fn turret_system(
                 Some(dir) => dir,
                 None => Vec2::Y,
             };
-
+            let angle = Vec2::X.angle_between(dir);
             for _ in 0..turret.timer.times_finished() {
-                spawn_bullet(pos, dir, &mut commands);
+                let offset: f32 = rng.gen_range(-15.0..=15.0);
+                let new_angle = angle + offset.to_radians();
+                let (y, x) = new_angle.sin_cos();
+                let new_dir = Vec2::new(x, y);
+                let speed = rng.gen_range(900.0..=1100.0);
+                spawn_bullet(pos, new_dir, speed, &mut commands);
             }
         }
     }
 }
 
-fn spawn_bullet(pos: Vec2, dir: Vec2, commands: &mut Commands) {
+fn spawn_bullet(pos: Vec2, dir: Vec2, speed: f32, commands: &mut Commands) {
     commands
         .spawn()
         .insert(Bullet)
@@ -71,9 +78,9 @@ fn spawn_bullet(pos: Vec2, dir: Vec2, commands: &mut Commands) {
             ..Default::default()
         })
         .insert(Velocity {
-            translation: dir * 1000.0,
+            translation: dir * speed,
         })
         .insert(Lifetime {
-            timer: Timer::from_seconds(10.0, false),
+            timer: Timer::from_seconds(3.0, false),
         });
 }

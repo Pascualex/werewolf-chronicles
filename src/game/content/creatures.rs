@@ -23,7 +23,7 @@ pub fn hero(pos: Vec2) -> CreatureBundle {
 
 pub fn zombie(pos: Vec2, color: Color) -> CreatureBundle {
     CreatureBundle {
-        movement_stats: MovementStats { speed: 100.0 },
+        movement_stats: MovementStats { speed: 150.0 },
         sprite_bundle: SpriteBundle {
             transform: Transform {
                 translation: pos.extend(0.0),

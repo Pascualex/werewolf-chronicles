@@ -8,6 +8,7 @@
         "aabb",
         "consts",
         "despawn",
+        "despawned",
         "timestep"
     ]
 }
