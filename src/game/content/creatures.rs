@@ -12,7 +12,7 @@ pub fn hero(pos: Vec2) -> CreatureBundle {
                 ..Default::default()
             },
             sprite: Sprite {
-                color: Color::BLUE,
+                color: Color::rgb(0.0, 0.3, 0.95),
                 ..Default::default()
             },
             ..Default::default()
@@ -21,13 +21,13 @@ pub fn hero(pos: Vec2) -> CreatureBundle {
     }
 }
 
-pub fn zombie(pos: Vec2, color: Color) -> CreatureBundle {
+pub fn zombie(pos: Vec2, size: f32, speed: f32, color: Color) -> CreatureBundle {
     CreatureBundle {
-        movement_stats: MovementStats { speed: 150.0 },
+        movement_stats: MovementStats { speed },
         sprite_bundle: SpriteBundle {
             transform: Transform {
                 translation: pos.extend(0.0),
-                scale: Vec3::new(30.0, 30.0, 0.0),
+                scale: Vec3::new(size, size, 0.0),
                 ..Default::default()
             },
             sprite: Sprite {

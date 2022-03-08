@@ -27,14 +27,17 @@ pub fn spawner_system(
         let offset = Vec2::new(x, y) * 1000.0;
 
         let pos = player_transform.translation.truncate() + offset;
+        let seed: f32 = rng.gen_range(0.0..=1.0);
+        let size = 5.0 + 15.0 * seed.powi(2);
+        let speed = 100.0 + (1.0 - seed).powi(2) * 400.0;
         let color = Color::rgb(
-            rng.gen_range(0.0..=1.0),
-            rng.gen_range(0.0..=1.0),
-            rng.gen_range(0.0..=1.0),
+            0.9 - seed * 0.7,
+            0.1 + seed * 0.5,
+            1.0 - seed * 0.8,
         );
         commands
             .spawn()
             .insert(Ai)
-            .insert_bundle(creatures::zombie(pos, color));
+            .insert_bundle(creatures::zombie(pos, size, speed, color));
     }
 }

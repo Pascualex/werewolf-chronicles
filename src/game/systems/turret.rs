@@ -72,7 +72,7 @@ fn spawn_bullet(pos: Vec2, dir: Vec2, speed: f32, commands: &mut Commands) {
                 ..Default::default()
             },
             sprite: Sprite {
-                color: Color::RED,
+                color: Color::rgb(0.85, 0.1, 0.1),
                 ..Default::default()
             },
             ..Default::default()

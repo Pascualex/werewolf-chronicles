@@ -25,7 +25,7 @@ impl Plugin for GamePlugin {
                     .with_run_criteria(FixedTimestep::step(1.0))
                     .with_system(diagnostics_system),
             )
-            .insert_resource(CollisionGrid::<Ai>::new(30.0))
+            .insert_resource(CollisionGrid::<Ai>::new(150.0))
             .insert_resource(Spawner::new(10_000.0));
     }
 }
