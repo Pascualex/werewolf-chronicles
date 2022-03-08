@@ -28,7 +28,7 @@ pub fn spawner_system(
 
         let pos = player_transform.translation.truncate() + offset;
         let seed: f32 = rng.gen_range(0.0..=1.0);
-        let size = 5.0 + 15.0 * seed.powi(2);
+        let size = 30.0 - 20.0 * (1.0 - seed).powi(2);
         let speed = 100.0 + (1.0 - seed).powi(2) * 400.0;
         let color = Color::rgb(
             0.9 - seed * 0.7,
