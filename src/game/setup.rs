@@ -10,5 +10,5 @@ pub fn setup_system(mut commands: Commands) {
         .spawn()
         .insert(Player)
         .insert_bundle(creatures::hero(Vec2::ZERO))
-        .insert(Turret::new(10_500.0));
+        .insert(Turret::new(110.0));
 }

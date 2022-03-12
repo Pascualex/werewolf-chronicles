@@ -3,35 +3,18 @@ use std::time::Duration;
 use bevy::prelude::*;
 use rand::Rng;
 
-use crate::game::{components::*, TIME_STEP};
-
-// pub fn turret_system(mut query: Query<(&mut Turret, &Transform)>, mut commands: Commands) {
-//     for (mut turret, transform) in query.iter_mut() {
-//         turret.timer.tick(Duration::from_secs_f32(TIME_STEP));
-//         if !turret.timer.just_finished() {
-//             continue;
-//         }
-
-//         let pos = transform.translation.truncate();
-//         let mut rng = rand::thread_rng();
-//         for _ in 0..turret.timer.times_finished() {
-//             for _ in 0..50 {
-//                 let angle: f32 = rng.gen_range(0.0..(2.0 * PI));
-//                 let (y, x) = angle.sin_cos();
-//                 let dir = Vec2::new(x, y);
-//                 spawn_bullet(pos, dir, &mut commands);
-//             }
-//         }
-//     }
-// }
+use crate::game::{
+    components::{Size, *},
+    TIME_STEP,
+};
 
 pub fn turret_system(
-    mut query: Query<(&mut Turret, &Transform)>,
-    ai_query: Query<&Transform, With<Ai>>,
+    mut query: Query<(&Position, &mut Turret)>,
+    ai_query: Query<&Position, With<Ai>>,
     mut commands: Commands,
 ) {
     let mut rng = rand::thread_rng();
-    for (mut turret, transform) in query.iter_mut() {
+    for (pos, mut turret) in query.iter_mut() {
         turret.timer.tick(Duration::from_secs_f32(TIME_STEP));
         if !turret.timer.just_finished() {
             continue;
@@ -39,48 +22,44 @@ pub fn turret_system(
 
         let min_difference = ai_query
             .iter()
-            .map(|t| (t.translation - transform.translation).truncate())
+            .map(|p| p.value - pos.value)
             .min_by(|a, b| a.length().partial_cmp(&b.length()).unwrap());
 
         if let Some(difference) = min_difference {
-            let pos = transform.translation.truncate();
             let dir = match difference.try_normalize() {
                 Some(dir) => dir,
                 None => Vec2::Y,
             };
+            let speed = 1000.0;
+            let dist_per_shot = speed * turret.timer.duration().as_secs_f32();
+            let dist_offset = dist_per_shot * turret.timer.percent();
             let angle = Vec2::X.angle_between(dir);
-            for _ in 0..turret.timer.times_finished() {
-                let offset: f32 = rng.gen_range(-15.0..=15.0);
-                let new_angle = angle + offset.to_radians();
+            for i in 0..turret.timer.times_finished() {
+                let angle_offset: f32 = rng.gen_range(-15.0..=15.0);
+                let new_angle = angle + angle_offset.to_radians();
                 let (y, x) = new_angle.sin_cos();
                 let new_dir = Vec2::new(x, y);
-                let speed = rng.gen_range(900.0..=1100.0);
-                spawn_bullet(pos, new_dir, speed, &mut commands);
+                let new_pos = pos.value + new_dir * dist_per_shot * (dist_offset + i as f32);
+                spawn_bullet(new_pos, new_dir, speed, &mut commands);
             }
         }
     }
 }
 
-fn spawn_bullet(pos: Vec2, dir: Vec2, speed: f32, commands: &mut Commands) {
+fn spawn_bullet(position: Vec2, direction: Vec2, speed: f32, commands: &mut Commands) {
     commands
         .spawn()
         .insert(Bullet)
+        .insert(Position::from_vec2(position))
+        .insert(Size::new(10.0, 10.0))
+        .insert(Velocity::from_vec2(direction * speed))
+        .insert(Lifetime::new(3.0))
         .insert_bundle(SpriteBundle {
-            transform: Transform {
-                translation: pos.extend(0.0),
-                scale: Vec3::new(10.0, 10.0, 0.0),
-                ..Default::default()
-            },
+            transform: Transform::from_scale(Vec3::new(10.0, 10.0, 0.0)),
             sprite: Sprite {
                 color: Color::rgb(0.85, 0.1, 0.1),
                 ..Default::default()
             },
             ..Default::default()
-        })
-        .insert(Velocity {
-            translation: dir * speed,
-        })
-        .insert(Lifetime {
-            timer: Timer::from_seconds(3.0, false),
         });
 }

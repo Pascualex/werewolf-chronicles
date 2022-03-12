@@ -3,17 +3,16 @@ use bevy::prelude::*;
 use crate::game::components::*;
 
 pub fn ai_movement_system(
-    mut query: Query<(&Transform, &MovementStats, &mut Velocity), With<Ai>>,
-    mut player_query: Query<&Transform, With<Player>>,
+    mut ai_query: Query<(&Position, &mut Velocity, &MovementStats), With<Ai>>,
+    mut player_query: Query<&Position, With<Player>>,
 ) {
-    let player_transform = match player_query.get_single_mut() {
+    let player_pos = match player_query.get_single_mut() {
         Ok(single) => single,
         Err(_) => return,
     };
 
-    for (transform, stats, mut velocity) in query.iter_mut() {
-        let raw_dir = player_transform.translation - transform.translation;
-        let dir = raw_dir.truncate().normalize_or_zero();
-        velocity.translation = dir * stats.speed;
+    for (ai_pos, mut ai_vel, ai_stats) in ai_query.iter_mut() {
+        let dir = (player_pos.value - ai_pos.value).normalize_or_zero();
+        ai_vel.value = dir * ai_stats.speed;
     }
 }

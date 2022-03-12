@@ -3,10 +3,10 @@ use bevy::prelude::*;
 use crate::game::components::*;
 
 pub fn player_movement_system(
-    mut query: Query<(&MovementStats, &mut Velocity), With<Player>>,
+    mut query: Query<(&mut Velocity, &MovementStats), With<Player>>,
     keyboard_input: Res<Input<KeyCode>>,
 ) {
-    let (stats, mut velocity) = match query.get_single_mut() {
+    let (mut velocity, stats) = match query.get_single_mut() {
         Ok(single) => single,
         Err(_) => return,
     };
@@ -26,5 +26,5 @@ pub fn player_movement_system(
         dir.x -= 1.0;
     }
 
-    velocity.translation = dir * stats.speed;
+    velocity.value = dir * stats.speed;
 }

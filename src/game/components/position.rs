@@ -1,11 +1,11 @@
 use bevy::prelude::*;
 
 #[derive(Component, Default)]
-pub struct Velocity {
+pub struct Position {
     pub value: Vec2,
 }
 
-impl Velocity {
+impl Position {
     pub fn from_vec2(value: Vec2) -> Self {
         Self { value }
     }

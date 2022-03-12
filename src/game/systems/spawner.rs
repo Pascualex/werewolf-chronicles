@@ -7,7 +7,7 @@ use crate::game::{components::*, content::creatures, resources::*, TIME_STEP};
 
 pub fn spawner_system(
     mut spawner: ResMut<Spawner>,
-    mut query: Query<&Transform, With<Player>>,
+    mut query: Query<&Position, With<Player>>,
     mut commands: Commands,
 ) {
     spawner.timer.tick(Duration::from_secs_f32(TIME_STEP));
@@ -15,7 +15,7 @@ pub fn spawner_system(
         return;
     }
 
-    let player_transform = match query.get_single_mut() {
+    let player_pos = match query.get_single_mut() {
         Ok(single) => single,
         Err(_) => return,
     };
@@ -26,15 +26,11 @@ pub fn spawner_system(
         let (y, x) = angle.sin_cos();
         let offset = Vec2::new(x, y) * 1000.0;
 
-        let pos = player_transform.translation.truncate() + offset;
+        let pos = player_pos.value + offset;
         let seed: f32 = rng.gen_range(0.0..=1.0);
-        let size = 30.0 - 20.0 * (1.0 - seed).powi(2);
+        let size = 50.0 - 20.0 * (1.0 - seed).powi(2);
         let speed = 100.0 + (1.0 - seed).powi(2) * 400.0;
-        let color = Color::rgb(
-            0.9 - seed * 0.7,
-            0.1 + seed * 0.5,
-            1.0 - seed * 0.8,
-        );
+        let color = Color::rgb(0.9 - seed * 0.7, 0.1 + seed * 0.5, 1.0 - seed * 0.8);
         commands
             .spawn()
             .insert(Ai)

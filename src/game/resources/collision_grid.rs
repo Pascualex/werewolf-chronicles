@@ -2,9 +2,11 @@ use std::{collections::hash_map::Entry, marker::PhantomData};
 
 use bevy::{prelude::*, sprite::collide_aabb::collide, utils::HashMap};
 
+use crate::game::components::{Size, *};
+
 pub struct CollisionGrid<T: Component> {
     cell_size: f32,
-    grid: HashMap<IVec2, Vec<(Entity, Vec3, Vec2)>>,
+    grid: HashMap<IVec2, Vec<(Entity, Vec2, Vec2)>>,
     phantom_data: PhantomData<T>,
 }
 
@@ -17,21 +19,17 @@ impl<T: Component> CollisionGrid<T> {
         }
     }
 
-    pub fn insert(&mut self, entity: Entity, transform: &Transform) {
-        let pos = transform.translation;
-        let size = transform.scale.truncate();
-        let idx = (pos.truncate() / self.cell_size).as_ivec2();
+    pub fn insert(&mut self, entity: Entity, position: &Position, size: &Size) {
+        let idx = (position.value / self.cell_size).as_ivec2();
         let bucket = match self.grid.entry(idx) {
             Entry::Occupied(o) => o.into_mut(),
             Entry::Vacant(v) => v.insert(Vec::new()),
         };
-        bucket.push((entity, pos, size));
+        bucket.push((entity, position.value, size.value));
     }
 
-    pub fn get_collisions(&self, transform: &Transform) -> Vec<Entity> {
-        let pos = transform.translation;
-        let size = transform.scale.truncate();
-        let idx = (pos.truncate() / self.cell_size).as_ivec2();
+    pub fn get_collisions(&self, position: &Position, size: &Size) -> Vec<Entity> {
+        let idx = (position.value / self.cell_size).as_ivec2();
         let mut collisions = Vec::new();
         for y in [-1, 0, 1] {
             for x in [-1, 0, 1] {
@@ -41,7 +39,9 @@ impl<T: Component> CollisionGrid<T> {
                     None => continue,
                 };
                 for (col_entity, col_pos, col_size) in bucket.iter() {
-                    if collide(pos, size, col_pos.to_owned(), col_size.to_owned()).is_some() {
+                    let pos = position.value.extend(0.0);
+                    let size = size.value;
+                    if collide(pos, size, col_pos.extend(0.0), col_size.to_owned()).is_some() {
                         collisions.push(col_entity.to_owned());
                     }
                 }

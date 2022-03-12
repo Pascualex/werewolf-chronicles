@@ -8,6 +8,5 @@ mod resources;
 mod setup;
 mod systems;
 
+use plugin::{TIME_STEP, TIME_STEP_ID};
 use setup::setup_system;
-
-pub const TIME_STEP: f32 = 1.0 / 60.0;

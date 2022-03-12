@@ -1,16 +1,17 @@
 use bevy::prelude::*;
 
-use crate::game::{bundles::CreatureBundle, components::MovementStats};
+use crate::game::{
+    bundles::*,
+    components::{Size, *},
+};
 
-pub fn hero(pos: Vec2) -> CreatureBundle {
+pub fn hero(position: Vec2) -> CreatureBundle {
     CreatureBundle {
+        position: Position::from_vec2(position),
+        size: Size::new(50.0, 50.0),
         movement_stats: MovementStats { speed: 300.0 },
         sprite_bundle: SpriteBundle {
-            transform: Transform {
-                translation: pos.extend(0.0),
-                scale: Vec3::new(50.0, 50.0, 0.0),
-                ..Default::default()
-            },
+            transform: Transform::from_scale(Vec3::new(50.0, 50.0, 0.0)),
             sprite: Sprite {
                 color: Color::rgb(0.0, 0.3, 0.95),
                 ..Default::default()
@@ -21,15 +22,13 @@ pub fn hero(pos: Vec2) -> CreatureBundle {
     }
 }
 
-pub fn zombie(pos: Vec2, size: f32, speed: f32, color: Color) -> CreatureBundle {
+pub fn zombie(position: Vec2, size: f32, speed: f32, color: Color) -> CreatureBundle {
     CreatureBundle {
+        position: Position::from_vec2(position),
+        size: Size::new(50.0, 50.0),
         movement_stats: MovementStats { speed },
         sprite_bundle: SpriteBundle {
-            transform: Transform {
-                translation: pos.extend(0.0),
-                scale: Vec3::new(size, size, 0.0),
-                ..Default::default()
-            },
+            transform: Transform::from_scale(Vec3::new(size, size, 0.0)),
             sprite: Sprite {
                 color,
                 ..Default::default()
