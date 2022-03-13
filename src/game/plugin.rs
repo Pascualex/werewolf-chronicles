@@ -31,9 +31,10 @@ impl Plugin for GamePlugin {
             SystemSet::new()
                 .after("velocity")
                 .with_run_criteria(FixedTimestep::step(TIME_STEP as f64))
+                .with_system(overlap_system.after("collisions"))
                 .with_system(ai_movement_system)
-                .with_system(bullet_system.label("collisions"))
-                .with_system(collision_grid_system.before("collisions"))
+                .with_system(bullet_system.after("collisions"))
+                .with_system(collision_grid_system.label("collisions"))
                 .with_system(lifetime_system)
                 .with_system(player_movement_system)
                 .with_system(spawner_system)
@@ -51,6 +52,6 @@ impl Plugin for GamePlugin {
                 .with_system(diagnostics_system),
         )
         .insert_resource(CollisionGrid::<Ai>::new(50.0))
-        .insert_resource(Spawner::new(100.0));
+        .insert_resource(Spawner::new(20.0));
     }
 }

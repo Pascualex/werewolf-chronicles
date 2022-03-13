@@ -16,8 +16,8 @@ pub fn transform_system(
         transform.translation.y = pos.value.y;
 
         if let Some(vel) = vel {
-            transform.translation.x += vel.value.x * time_step_progress * TIME_STEP;
-            transform.translation.y += vel.value.y * time_step_progress * TIME_STEP;
+            transform.translation.x += vel.total().x * time_step_progress * TIME_STEP;
+            transform.translation.y += vel.total().y * time_step_progress * TIME_STEP;
         }
     }
 }

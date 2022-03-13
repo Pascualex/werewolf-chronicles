@@ -14,7 +14,7 @@ pub fn bullet_system(
     let mut despawned_entities = HashSet::default();
     for (bullet_entity, bullet_pos, bullet_size) in bullet_query.iter() {
         let ai_collisions = collision_grid.get_collisions(bullet_pos, bullet_size);
-        for ai_entity in ai_collisions.iter() {
+        for (ai_entity, _) in ai_collisions.iter() {
             let ai_entity = match ai_query.get(*ai_entity) {
                 Ok(o) => o,
                 Err(_) => continue,

@@ -26,5 +26,5 @@ pub fn player_movement_system(
         dir.x -= 1.0;
     }
 
-    velocity.value = dir * stats.speed;
+    velocity.variable += dir * stats.speed;
 }

@@ -29,7 +29,7 @@ pub fn spawner_system(
         let pos = player_pos.value + offset;
         let seed: f32 = rng.gen_range(0.0..=1.0);
         let size = 50.0 - 20.0 * (1.0 - seed).powi(2);
-        let speed = 100.0 + (1.0 - seed).powi(2) * 400.0;
+        let speed = 100.0 + (1.0 - seed).powi(2) * 50.0;
         let color = Color::rgb(0.9 - seed * 0.7, 0.1 + seed * 0.5, 1.0 - seed * 0.8);
         commands
             .spawn()

@@ -13,6 +13,6 @@ pub fn ai_movement_system(
 
     for (ai_pos, mut ai_vel, ai_stats) in ai_query.iter_mut() {
         let dir = (player_pos.value - ai_pos.value).normalize_or_zero();
-        ai_vel.value = dir * ai_stats.speed;
+        ai_vel.variable += dir * ai_stats.speed;
     }
 }
