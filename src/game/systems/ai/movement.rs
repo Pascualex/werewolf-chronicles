@@ -4,9 +4,9 @@ use crate::game::components::*;
 
 pub fn ai_movement_system(
     mut ai_query: Query<(&Position, &mut Velocity, &MovementStats), With<Ai>>,
-    mut player_query: Query<&Position, With<Player>>,
+    player_query: Query<&Position, With<Player>>,
 ) {
-    let player_pos = match player_query.get_single_mut() {
+    let player_pos = match player_query.get_single() {
         Ok(single) => single,
         Err(_) => return,
     };

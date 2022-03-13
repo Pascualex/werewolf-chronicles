@@ -1,5 +1,6 @@
 pub use ai::*;
 pub use bullet::bullet_system;
+pub use camera::camera_system;
 pub use collision_grid::collision_grid_system;
 pub use diagnostics::diagnostics_system;
 pub use lifetime::lifetime_system;
@@ -11,6 +12,7 @@ pub use velocity::velocity_system;
 
 mod ai;
 mod bullet;
+mod camera;
 mod collision_grid;
 mod diagnostics;
 mod lifetime;
