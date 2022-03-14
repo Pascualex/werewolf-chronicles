@@ -8,7 +8,10 @@ pub struct Velocity {
 
 impl Velocity {
     pub fn from_vec2(constant: Vec2) -> Self {
-        Self { constant, variable: Vec2::ZERO }
+        Self {
+            constant,
+            variable: Vec2::ZERO,
+        }
     }
 
     pub fn total(&self) -> Vec2 {
