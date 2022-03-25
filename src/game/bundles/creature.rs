@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::game::components::{Size, *};
+use crate::game::components::{Health, MovementStats, Position, Size, Velocity};
 
 #[derive(Bundle, Default)]
 pub struct CreatureBundle {

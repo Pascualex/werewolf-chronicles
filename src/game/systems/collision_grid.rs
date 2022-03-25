@@ -1,8 +1,8 @@
 use bevy::prelude::*;
 
 use crate::game::{
-    components::{Size, *},
-    resources::*,
+    components::{Ai, Position, Size},
+    resources::CollisionGrid,
 };
 
 pub fn collision_grid_system(

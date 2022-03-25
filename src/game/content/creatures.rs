@@ -1,8 +1,8 @@
 use bevy::prelude::*;
 
 use crate::game::{
-    bundles::*,
-    components::{Size, *},
+    bundles::CreatureBundle,
+    components::{Health, MovementStats, Position, Size},
 };
 
 pub fn hero(position: Vec2) -> CreatureBundle {

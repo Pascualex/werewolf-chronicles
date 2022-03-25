@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::game::components::*;
+use crate::game::components::{Ai, MovementStats, Player, Position, Velocity};
 
 pub fn ai_movement_system(
     mut ai_query: Query<(&Position, &mut Velocity, &MovementStats), With<Ai>>,

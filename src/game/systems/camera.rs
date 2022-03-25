@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::game::components::*;
+use crate::game::components::Player;
 
 pub fn camera_system(
     mut camera_query: Query<(&mut Transform, &Camera), Without<Player>>,

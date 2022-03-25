@@ -3,7 +3,7 @@ use std::{collections::hash_map::Entry, marker::PhantomData};
 use bevy::{prelude::*, utils::HashMap};
 use rand::Rng;
 
-use crate::game::components::{Size, *};
+use crate::game::components::{Position, Size};
 
 pub struct CollisionGrid<T: Component> {
     cell_size: f32,

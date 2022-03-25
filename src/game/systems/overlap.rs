@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use crate::game::{
-    components::{Size, *},
+    components::{Ai, Position, Size, Velocity},
     resources::CollisionGrid,
 };
 

@@ -1,5 +1,5 @@
 pub use ai::Ai;
-pub use bullet::Bullet;
+pub use handler::Handler;
 pub use health::Health;
 pub use lifetime::Lifetime;
 pub use player::Player;
@@ -10,7 +10,7 @@ pub use turret::Turret;
 pub use velocity::Velocity;
 
 mod ai;
-mod bullet;
+mod handler;
 mod health;
 mod lifetime;
 mod player;

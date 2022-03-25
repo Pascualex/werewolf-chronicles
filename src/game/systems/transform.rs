@@ -1,6 +1,9 @@
 use bevy::{core::FixedTimesteps, prelude::*};
 
-use crate::game::{components::*, TIME_STEP, TIME_STEP_ID};
+use crate::game::{
+    components::{Position, Velocity},
+    TIME_STEP, TIME_STEP_ID,
+};
 
 pub fn transform_system(
     mut query: Query<(&Position, Option<&Velocity>, &mut Transform)>,

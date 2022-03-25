@@ -3,7 +3,12 @@ use std::{f32::consts::PI, time::Duration};
 use bevy::prelude::*;
 use rand::Rng;
 
-use crate::game::{components::*, content::creatures, resources::*, TIME_STEP};
+use crate::game::{
+    components::{Ai, Player, Position},
+    content::creatures,
+    resources::Spawner,
+    TIME_STEP,
+};
 
 pub fn spawner_system(
     mut spawner: ResMut<Spawner>,
