@@ -9,6 +9,7 @@
         "consts",
         "despawn",
         "despawned",
+        "nanos",
         "timestep",
         "timesteps"
     ]

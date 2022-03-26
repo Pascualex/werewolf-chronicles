@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use bevy::prelude::*;
 
 use crate::game::content::Ability;
@@ -10,7 +12,13 @@ pub struct MultiCast {
 }
 
 impl MultiCast {
-    pub fn cast(&self, position: Vec2, direction: Vec2, delay: f32, commands: &mut Commands) {
+    pub fn spawn(
+        &self,
+        position: Vec2,
+        direction: Vec2,
+        progress: Duration,
+        commands: &mut Commands,
+    ) {
         if self.shots == 0 {
             return;
         }
@@ -23,7 +31,7 @@ impl MultiCast {
             let shot_angle = left_angle + angle_per_shot * i as f32;
             let (y, x) = shot_angle.sin_cos();
             let shot_dir = Vec2::new(x, y);
-            let shot_pos = position + (shot_dir * self.ability.speed * delay);
+            let shot_pos = position + (shot_dir * self.ability.speed * progress.as_secs_f32());
 
             self.ability.spawn(shot_pos, shot_dir, commands);
         }

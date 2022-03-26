@@ -33,13 +33,13 @@ impl Plugin for GamePlugin {
                 .with_run_criteria(FixedTimestep::step(TIME_STEP as f64))
                 .with_system(overlap_system.after("collisions"))
                 .with_system(ai_movement_system)
+                .with_system(caster_system)
                 .with_system(collision_grid_system.label("collisions"))
                 .with_system(death_system.label("death"))
                 .with_system(impact_system.after("collisions").before("death"))
                 .with_system(lifetime_system)
                 .with_system(player_movement_system)
-                .with_system(spawner_system)
-                .with_system(turret_system),
+                .with_system(spawner_system),
         )
         .add_system_set_to_stage(
             CustomStage::Render,

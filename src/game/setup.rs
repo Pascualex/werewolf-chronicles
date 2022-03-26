@@ -18,5 +18,8 @@ pub fn setup_system(mut commands: Commands) {
         .spawn()
         .insert(Player)
         .insert_bundle(creatures::hero(Vec2::ZERO))
-        .insert(Turret::new(1.0, Cast::new_multi(50, 180.0, bullet)));
+        .insert(Casters::new(vec![
+            Caster::new(1.0, Cast::new_multi(50, 180.0, bullet.clone())),
+            Caster::new(3.2, Cast::new_multi(20, 30.0, bullet)),
+        ]));
 }

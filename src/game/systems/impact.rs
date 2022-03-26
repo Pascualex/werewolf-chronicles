@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use bevy::prelude::*;
 
 use crate::game::{
@@ -26,7 +28,12 @@ pub fn impact_system(
                 }
 
                 for cast in on_impact.effect.casts.iter() {
-                    cast.cast(impact_pos.value, impact_vel.total(), 0.0, &mut commands);
+                    cast.spawn(
+                        impact_pos.value,
+                        impact_vel.total(),
+                        Duration::ZERO,
+                        &mut commands,
+                    );
                 }
 
                 if on_impact.effect.self_destroy {

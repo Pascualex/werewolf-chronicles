@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use bevy::prelude::*;
 
 use crate::game::content::{MultiCast, SimpleCast};
@@ -23,10 +25,16 @@ impl Cast {
         })
     }
 
-    pub fn cast(&self, position: Vec2, direction: Vec2, delay: f32, commands: &mut Commands) {
+    pub fn spawn(
+        &self,
+        position: Vec2,
+        direction: Vec2,
+        progress: Duration,
+        commands: &mut Commands,
+    ) {
         match self {
-            Self::Simple(s) => s.cast(position, direction, delay, commands),
-            Self::Multi(m) => m.cast(position, direction, delay, commands),
+            Self::Simple(s) => s.spawn(position, direction, progress, commands),
+            Self::Multi(m) => m.spawn(position, direction, progress, commands),
         }
     }
 }
