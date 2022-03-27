@@ -32,6 +32,8 @@ pub fn impact_system(
                         impact_pos.value,
                         impact_vel.total(),
                         Duration::ZERO,
+                        None,
+                        on_impact.ability_modifier.clone(),
                         &mut commands,
                     );
                 }

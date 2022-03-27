@@ -53,6 +53,6 @@ impl Plugin for GamePlugin {
                 .with_system(diagnostics_system),
         )
         .insert_resource(CollisionGrid::<Ai>::new(50.0))
-        .insert_resource(Spawner::new(10.0));
+        .insert_resource(Spawner::new(1000.0));
     }
 }

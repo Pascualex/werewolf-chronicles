@@ -2,24 +2,17 @@ use std::time::Duration;
 
 use bevy::prelude::*;
 
-use crate::game::content::{MultiCast, SimpleCast};
-
-use super::Ability;
+use crate::game::content::{Ability, AbilityModifier, CastModifier, MultiCast};
 
 #[derive(Clone)]
 pub enum Cast {
-    Simple(SimpleCast),
     Multi(MultiCast),
 }
 
 impl Cast {
-    pub fn new_simple(ability: Ability) -> Self {
-        Cast::Simple(SimpleCast { ability })
-    }
-
-    pub fn new_multi(shots: u32, arc: f32, ability: Ability) -> Self {
+    pub fn new_multi(count: u32, arc: f32, ability: Ability) -> Self {
         Cast::Multi(MultiCast {
-            shots,
+            count,
             arc,
             ability,
         })
@@ -30,11 +23,19 @@ impl Cast {
         position: Vec2,
         direction: Vec2,
         progress: Duration,
+        cast_modifier: Option<CastModifier>,
+        ability_modifier: Option<AbilityModifier>,
         commands: &mut Commands,
     ) {
         match self {
-            Self::Simple(s) => s.spawn(position, direction, progress, commands),
-            Self::Multi(m) => m.spawn(position, direction, progress, commands),
+            Self::Multi(m) => m.spawn(
+                position,
+                direction,
+                progress,
+                cast_modifier,
+                ability_modifier,
+                commands,
+            ),
         }
     }
 }

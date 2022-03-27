@@ -15,4 +15,10 @@ impl OnImpact {
             casts: Vec::new(),
         }
     }
+
+    pub fn add_damage(&mut self, extra_damage: u32) {
+        if let Some(ref mut damage) = self.damage {
+            *damage += extra_damage;
+        }
+    }
 }

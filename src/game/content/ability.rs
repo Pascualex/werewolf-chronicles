@@ -5,6 +5,8 @@ use crate::game::{
     content::OnImpact,
 };
 
+use super::AbilityModifier;
+
 #[derive(Clone)]
 pub struct Ability {
     pub size: Vec2,
@@ -15,10 +17,17 @@ pub struct Ability {
 }
 
 impl Ability {
-    pub fn spawn(&self, position: Vec2, direction: Vec2, commands: &mut Commands) {
+    pub fn spawn(
+        &self,
+        position: Vec2,
+        direction: Vec2,
+        modifier: Option<AbilityModifier>,
+        commands: &mut Commands,
+    ) {
         let mut entity_commands = commands.spawn();
 
         let normalized_dir = direction.normalize_or_zero();
+
         entity_commands
             .insert(Position::from_vec2(position))
             .insert(Size::from_vec2(self.size))
@@ -33,8 +42,12 @@ impl Ability {
                 ..Default::default()
             });
 
-        if let Some(on_impact) = self.on_impact.clone() {
-            entity_commands.insert(Handler::<OnImpact>::new(on_impact));
+        if let Some(mut on_impact) = self.on_impact.clone() {
+            if let Some(modifier) = &modifier {
+                on_impact.add_damage(modifier.extra_damage);
+            }
+
+            entity_commands.insert(Handler::<OnImpact>::new(on_impact, modifier));
         }
     }
 }
